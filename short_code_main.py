@@ -5,6 +5,7 @@ from  short_code_functions import vmsc_lst_mail_body
 from short_code_functions import legecy_lst_mail_body
 from short_code_functions import lst_mail_body
 from short_code_functions import vmsc_add_mail_body
+from short_code_functions import prepare_mail_body
 a = 'ytee'
 b = 'jdhdhd'
 
@@ -21,7 +22,8 @@ import xlrd
 # exit(-63)
 # legecy_short_code_lst()
 # exit(-44)
-loc = "C:/Users/123/Downloads/Robi RPA/Short Code Define/short_code2.xlsx"
+code = '10766'
+loc = "C:/Users/RPA/Downloads/Robi RPA/Short Code Define/short_code2.xlsx"
 plan_format_status, vmsc_fragment, legecy_fragment = bmc_plan_format_check(loc)
 print(plan_format_status)
 mail_header = f"""<table width="1200" border=1px solid black>
@@ -105,7 +107,7 @@ file3 = f'addlog.txt'
 legecy_lst_status = legecy_lst_mail_body(loc, file2)
 # print(legecy_lst_status)
 vmsc_lst_status = vmsc_lst_mail_body(loc, file)
-lst_mail_body = lst_mail_body(vmsc_lst_status, legecy_lst_status)
+lst_mail_body = lst_mail_body(vmsc_lst_status, legecy_lst_status, code)
 # print(lst_mail_body)
 
 prepare_mail_body()
