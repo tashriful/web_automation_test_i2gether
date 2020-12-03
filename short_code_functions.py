@@ -238,7 +238,8 @@ def vmsc_lst_mail_body(loc, file):
 
 def legecy_lst_mail_body(loc, file):
     file_path = f'{loc}{file}'
-    legecy_lst_status = {}
+    cnacld_lst_status = {}
+    callprichk_lst_status = {}
     try:
         result_data = open(f"{file_path}", "r")
         result_data = result_data.read().splitlines()
@@ -252,76 +253,204 @@ def legecy_lst_mail_body(loc, file):
                 cmd_name = cmd_name[1]
                 cmd_name = cmd_name.split(':')
                 cmd_name = cmd_name[0]
-                # print(cmd_name)
+                print(cmd_name)
             if 'NE :' in row:
                 ne_name = row
                 ne_name = ne_name.split(' : ')
                 ne_name = ne_name[1]
-                # print(ne_name)
+                print(ne_name)
             if '---    END' in row:
 
                 if prevLine == "No matching result is found":
                     tac_defined_status = False
                     # print("not defined")
-                    legecy_lst_status[f'({ne_name}) :> {cmd_name}'] = 'Not Defined'
+                    if 'CNACLD' in cmd_name:
+                        cnacld_lst_status[f'{ne_name}'] = 'Not Defined'
+                    if 'CALLPRICHK' in cmd_name:
+                        callprichk_lst_status[f'{ne_name}'] = 'Not Defined'
 
                 else:
                     tac_defined_status = True
                     # print("defined")
-                    legecy_lst_status[f'({ne_name}) :> {cmd_name}'] = 'Defined'
+                    if 'CNACLD' in cmd_name:
+                        cnacld_lst_status[f'{ne_name}'] = 'Not Defined'
+                    if 'CALLPRICHK' in cmd_name:
+                        callprichk_lst_status[f'{ne_name}'] = 'Not Defined'
 
             prevLine = row
         # print(legecy_lst_status)
-        return legecy_lst_status
+        return cnacld_lst_status, callprichk_lst_status
     except Exception as e:
 
         print("false" + "e")
 
-def lst_mail_body(vmsc_lst_status, legecy_lst_status, short_code):
+def lst_mail_body(cnacld_lst_status, callprichk_lst_status, short_code):
+    cnacld = ''
+    cnacld += f"""<tr>
+			<td rowspan="2" width="129">
+				<p>
+					<strong>{short_code}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>CNACLD</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_lst_status["DG06_MSOFT"] if "DG06_MSOFT" in cnacld_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_lst_status["DG10_MSOFT"] if "DG10_MSOFT" in cnacld_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_lst_status["D3MS01_MSOFTX"] if "D3MS01_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_lst_status["D3MS02_MSOFTX"] if "D3MS02_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_lst_status["D3MS03_MSOFTX"] if "D3MS03_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_lst_status["VLMS01_MSOFTX"] if "VLMS01_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_lst_status["VLMS02_MSOFTX"] if "VLMS02_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_lst_status["VLMS03_MSOFTX"] if "VLMS03_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_lst_status["ALMS01_MSOFTX"] if "ALMS01_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_lst_status["ALMS02_MSOFTX"] if "ALMS02_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_lst_status["ALMS03_MSOFTX"] if "ALMS03_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_lst_status["BDMS01_MSOFTX"] if "BDMS01_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_lst_status["BDMS02_MSOFTX"] if "BDMS02_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+            <td width="129">
+				<p>
+					<strong>{cnacld_lst_status["BDMS03_MSOFTX"] if "BDMS03_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+		</tr>"""
 
-    df = pd.DataFrame(list(vmsc_lst_status.items()), columns=['command', 'status'])
-    df2 = pd.DataFrame(list(legecy_lst_status.items()), columns=['command', 'status'])
-    # print(df)
-    # print(df2)
-    length = len(df)
-    i = 0
-    val = ''
-    while i < length:
-        code = df.values[i][0]
-        code2 = df.values[i][1]
-        try:
-            code3 = df2.values[i][0]
-        except Exception as e:
-            code3 = ''
-        try:
-            code4 = df2.values[i][1]
-        except Exception as e:
-            code4 = ''
+    callprichk = f"""<tr>
+    			<td width="129">
+    				<p>
+    					<strong>CALLPRICHK/strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>{cnacld_lst_status["DG06_MSOFT"] if "DG06_MSOFT" in cnacld_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>{cnacld_lst_status["DG10_MSOFT"] if "DG10_MSOFT" in cnacld_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>{cnacld_lst_status["D3MS01_MSOFTX"] if "D3MS01_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>{cnacld_lst_status["D3MS02_MSOFTX"] if "D3MS02_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>{cnacld_lst_status["D3MS03_MSOFTX"] if "D3MS03_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>{cnacld_lst_status["VLMS01_MSOFTX"] if "VLMS01_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>{cnacld_lst_status["VLMS02_MSOFTX"] if "VLMS02_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>{cnacld_lst_status["VLMS03_MSOFTX"] if "VLMS03_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>{cnacld_lst_status["ALMS01_MSOFTX"] if "ALMS01_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>{cnacld_lst_status["ALMS02_MSOFTX"] if "ALMS02_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>{cnacld_lst_status["ALMS03_MSOFTX"] if "ALMS03_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>{cnacld_lst_status["BDMS01_MSOFTX"] if "BDMS01_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>{cnacld_lst_status["BDMS02_MSOFTX"] if "BDMS02_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+                <td width="129">
+    				<p>
+    					<strong>{cnacld_lst_status["BDMS03_MSOFTX"] if "BDMS03_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+    		</tr>"""
+    print(val)
 
-        val += f"""<tr>
-    <td width="92">
-    <p>{short_code}</p>
-    </td>
-    <td width="230">
-    <p>{code}</p>
-    </td>
-    <td width="188">
-    <p>{code2}</p>
-    </td>
-    <td width="188">
-    <p>{code3}</p>
-    </td>
-    <td width="188">
-    <p>{code4}</p>
-    </td>
-    </tr>"""
-
-        # print(f'{code} {code2} {code3} {code4}')
-        i = i + 1
-    rowspan = length+1
 
     lst_mail_header = f"""<tr>
-<td rowspan="{rowspan}" width="124">
+<td rowspan="" width="124">
 <p><strong>Plan Verification</strong></p>
 </td>
 <td width="92">
