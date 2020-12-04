@@ -6,6 +6,7 @@ from short_code_functions import plan_file_mail_body
 from short_code_functions import vmsc_lst_mail_body
 from short_code_functions import legecy_lst_mail_body
 from short_code_functions import lst_mail_body
+from short_code_functions import lst_callprichk_mail_body
 from short_code_functions import vmsc_add_mail_body
 from short_code_functions import prepare_mail_body
 from short_code_functions import legecy_add_mail_body
@@ -31,20 +32,26 @@ file2 = f'legecy_lst.rst'
 file3 = f'addlog.txt'
 file4 = f'addVmsc.txt'
 code = '10651'
-cnacld_lst_status, callprichk_lst_status = legecy_lst_mail_body(loc, file)
-print(cnacld_lst_status)
-print(callprichk_lst_status)
+cnacld_vmsc_lst_status, callprichk_vmsc_lst_status = legecy_lst_mail_body(loc, file)
+print(cnacld_vmsc_lst_status)
+print(callprichk_vmsc_lst_status)
+cnacld_legecy_lst_status, callprichk_legecy_lst_status = legecy_lst_mail_body(loc, file2)
+print(cnacld_legecy_lst_status)
+print(callprichk_legecy_lst_status)
 # if cnacld_lst_status.get('Python') != None:
 #     print("The key is present.\n")
 #
 # else:
 #     print("The key does not exist in the dictionary.")
 
-a = f'{cnacld_lst_status["VLMS01_MSOFTX"] if "VLMS01_MSOFTX" in cnacld_lst_status.keys() else "N/A"}'
+a = f'{cnacld_legecy_lst_status["DG06_MSOFT"] if "DG06_MSOFT" in cnacld_legecy_lst_status.keys() else "N/A"}'
 print(a)
-
+# exit(-66)
 # vmsc_lst_status = vmsc_lst_mail_body(loc, file)
-lst_mail_body = lst_mail_body(cnacld_lst_status, callprichk_lst_status, code)
+lst_mail_body = lst_mail_body(cnacld_vmsc_lst_status, cnacld_legecy_lst_status, callprichk_vmsc_lst_status, callprichk_legecy_lst_status, code)
+print(lst_mail_body)
+# lst_callprichk_mail_body = lst_callprichk_mail_body(callprichk_vmsc_lst_status, callprichk_legecy_lst_status)
+# print(lst_callprichk_mail_body)
 exit(-3)
 # # print(lst_mail_body)
 # exit(-99)

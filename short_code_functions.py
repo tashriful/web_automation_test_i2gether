@@ -253,12 +253,12 @@ def legecy_lst_mail_body(loc, file):
                 cmd_name = cmd_name[1]
                 cmd_name = cmd_name.split(':')
                 cmd_name = cmd_name[0]
-                print(cmd_name)
+                # print(cmd_name)
             if 'NE :' in row:
                 ne_name = row
                 ne_name = ne_name.split(' : ')
                 ne_name = ne_name[1]
-                print(ne_name)
+                # print(ne_name)
             if '---    END' in row:
 
                 if prevLine == "No matching result is found":
@@ -273,9 +273,9 @@ def legecy_lst_mail_body(loc, file):
                     tac_defined_status = True
                     # print("defined")
                     if 'CNACLD' in cmd_name:
-                        cnacld_lst_status[f'{ne_name}'] = 'Not Defined'
+                        cnacld_lst_status[f'{ne_name}'] = 'Defined'
                     if 'CALLPRICHK' in cmd_name:
-                        callprichk_lst_status[f'{ne_name}'] = 'Not Defined'
+                        callprichk_lst_status[f'{ne_name}'] = 'Defined'
 
             prevLine = row
         # print(legecy_lst_status)
@@ -284,9 +284,12 @@ def legecy_lst_mail_body(loc, file):
 
         print("false" + "e")
 
-def lst_mail_body(cnacld_lst_status, callprichk_lst_status, short_code):
+def lst_mail_body(cnacld_vmsc_lst_status, cnacld_legecy_lst_status, callprichk_vmsc_lst_status, callprichk_legecy_lst_status, short_code):
+    print(cnacld_legecy_lst_status)
+    # return
     cnacld = ''
-    cnacld += f"""<tr>
+    callprichk = ''
+    cnacld = f"""<tr>
 			<td rowspan="2" width="129">
 				<p>
 					<strong>{short_code}</strong>
@@ -299,180 +302,238 @@ def lst_mail_body(cnacld_lst_status, callprichk_lst_status, short_code):
 			</td>
 			<td width="129">
 				<p>
-					<strong>{cnacld_lst_status["DG06_MSOFT"] if "DG06_MSOFT" in cnacld_lst_status.keys() else "N/A"}</strong>
+					<strong>{cnacld_legecy_lst_status["DG06_MSOFT"] if "DG06_MSOFT" in cnacld_legecy_lst_status.keys() else "N/A"}</strong>
 				</p>
 			</td>
 			<td width="129">
 				<p>
-					<strong>{cnacld_lst_status["DG10_MSOFT"] if "DG10_MSOFT" in cnacld_lst_status.keys() else "N/A"}</strong>
+					<strong>{cnacld_legecy_lst_status["DG10_MSOFT"] if "DG10_MSOFT" in cnacld_legecy_lst_status.keys() else "N/A"}</strong>
 				</p>
 			</td>
 			<td width="129">
 				<p>
-					<strong>{cnacld_lst_status["D3MS01_MSOFTX"] if "D3MS01_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+					<strong>{cnacld_vmsc_lst_status["D3MS01_MSOFTX"] if "D3MS01_MSOFTX" in cnacld_vmsc_lst_status.keys() else "N/A"}</strong>
 				</p>
 			</td>
 			<td width="129">
 				<p>
-					<strong>{cnacld_lst_status["D3MS02_MSOFTX"] if "D3MS02_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+					<strong>{cnacld_vmsc_lst_status["D3MS02_MSOFTX"] if "D3MS02_MSOFTX" in cnacld_vmsc_lst_status.keys() else "N/A"}</strong>
 				</p>
 			</td>
 			<td width="129">
 				<p>
-					<strong>{cnacld_lst_status["D3MS03_MSOFTX"] if "D3MS03_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+					<strong>{cnacld_vmsc_lst_status["D3MS03_MSOFTX"] if "D3MS03_MSOFTX" in cnacld_vmsc_lst_status.keys() else "N/A"}</strong>
 				</p>
 			</td>
 			<td width="129">
 				<p>
-					<strong>{cnacld_lst_status["VLMS01_MSOFTX"] if "VLMS01_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+					<strong>{cnacld_vmsc_lst_status["VLMS01_MSOFTX"] if "VLMS01_MSOFTX" in cnacld_vmsc_lst_status.keys() else "N/A"}</strong>
 				</p>
 			</td>
 			<td width="129">
 				<p>
-					<strong>{cnacld_lst_status["VLMS02_MSOFTX"] if "VLMS02_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+					<strong>{cnacld_vmsc_lst_status["VLMS02_MSOFTX"] if "VLMS02_MSOFTX" in cnacld_vmsc_lst_status.keys() else "N/A"}</strong>
 				</p>
 			</td>
 			<td width="129">
 				<p>
-					<strong>{cnacld_lst_status["VLMS03_MSOFTX"] if "VLMS03_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+					<strong>{cnacld_vmsc_lst_status["VLMS03_MSOFTX"] if "VLMS03_MSOFTX" in cnacld_vmsc_lst_status.keys() else "N/A"}</strong>
 				</p>
 			</td>
 			<td width="129">
 				<p>
-					<strong>{cnacld_lst_status["ALMS01_MSOFTX"] if "ALMS01_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+					<strong>{cnacld_vmsc_lst_status["ALMS01_MSOFTX"] if "ALMS01_MSOFTX" in cnacld_vmsc_lst_status.keys() else "N/A"}</strong>
 				</p>
 			</td>
 			<td width="129">
 				<p>
-					<strong>{cnacld_lst_status["ALMS02_MSOFTX"] if "ALMS02_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+					<strong>{cnacld_vmsc_lst_status["ALMS02_MSOFTX"] if "ALMS02_MSOFTX" in cnacld_vmsc_lst_status.keys() else "N/A"}</strong>
 				</p>
 			</td>
 			<td width="129">
 				<p>
-					<strong>{cnacld_lst_status["ALMS03_MSOFTX"] if "ALMS03_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+					<strong>{cnacld_vmsc_lst_status["ALMS03_MSOFTX"] if "ALMS03_MSOFTX" in cnacld_vmsc_lst_status.keys() else "N/A"}</strong>
 				</p>
 			</td>
 			<td width="129">
 				<p>
-					<strong>{cnacld_lst_status["BDMS01_MSOFTX"] if "BDMS01_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+					<strong>{cnacld_vmsc_lst_status["BDMS01_MSOFTX"] if "BDMS01_MSOFTX" in cnacld_vmsc_lst_status.keys() else "N/A"}</strong>
 				</p>
 			</td>
 			<td width="129">
 				<p>
-					<strong>{cnacld_lst_status["BDMS02_MSOFTX"] if "BDMS02_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+					<strong>{cnacld_vmsc_lst_status["BDMS02_MSOFTX"] if "BDMS02_MSOFTX" in cnacld_vmsc_lst_status.keys() else "N/A"}</strong>
 				</p>
 			</td>
             <td width="129">
 				<p>
-					<strong>{cnacld_lst_status["BDMS03_MSOFTX"] if "BDMS03_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+					<strong>{cnacld_vmsc_lst_status["BDMS03_MSOFTX"] if "BDMS03_MSOFTX" in cnacld_vmsc_lst_status.keys() else "N/A"}</strong>
 				</p>
 			</td>
 		</tr>"""
-
     callprichk = f"""<tr>
     			<td width="129">
     				<p>
-    					<strong>CALLPRICHK/strong>
+    					<strong>CALLPRICHECK</strong>
     				</p>
     			</td>
     			<td width="129">
     				<p>
-    					<strong>{cnacld_lst_status["DG06_MSOFT"] if "DG06_MSOFT" in cnacld_lst_status.keys() else "N/A"}</strong>
+    					<strong>{callprichk_legecy_lst_status["DG06_MSOFT"] if "DG06_MSOFT" in callprichk_legecy_lst_status.keys() else "N/A"}</strong>
     				</p>
     			</td>
     			<td width="129">
     				<p>
-    					<strong>{cnacld_lst_status["DG10_MSOFT"] if "DG10_MSOFT" in cnacld_lst_status.keys() else "N/A"}</strong>
+    					<strong>{callprichk_legecy_lst_status["DG10_MSOFT"] if "DG10_MSOFT" in callprichk_legecy_lst_status.keys() else "N/A"}</strong>
     				</p>
     			</td>
     			<td width="129">
     				<p>
-    					<strong>{cnacld_lst_status["D3MS01_MSOFTX"] if "D3MS01_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+    					<strong>{callprichk_vmsc_lst_status["D3MS01_MSOFTX"] if "D3MS01_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
     				</p>
     			</td>
     			<td width="129">
     				<p>
-    					<strong>{cnacld_lst_status["D3MS02_MSOFTX"] if "D3MS02_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+    					<strong>{callprichk_vmsc_lst_status["D3MS02_MSOFTX"] if "D3MS02_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
     				</p>
     			</td>
     			<td width="129">
     				<p>
-    					<strong>{cnacld_lst_status["D3MS03_MSOFTX"] if "D3MS03_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+    					<strong>{callprichk_vmsc_lst_status["D3MS03_MSOFTX"] if "D3MS03_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
     				</p>
     			</td>
     			<td width="129">
     				<p>
-    					<strong>{cnacld_lst_status["VLMS01_MSOFTX"] if "VLMS01_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+    					<strong>{callprichk_vmsc_lst_status["VLMS01_MSOFTX"] if "VLMS01_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
     				</p>
     			</td>
     			<td width="129">
     				<p>
-    					<strong>{cnacld_lst_status["VLMS02_MSOFTX"] if "VLMS02_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+    					<strong>{callprichk_vmsc_lst_status["VLMS02_MSOFTX"] if "VLMS02_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
     				</p>
     			</td>
     			<td width="129">
     				<p>
-    					<strong>{cnacld_lst_status["VLMS03_MSOFTX"] if "VLMS03_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+    					<strong>{callprichk_vmsc_lst_status["VLMS03_MSOFTX"] if "VLMS03_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
     				</p>
     			</td>
     			<td width="129">
     				<p>
-    					<strong>{cnacld_lst_status["ALMS01_MSOFTX"] if "ALMS01_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+    					<strong>{callprichk_vmsc_lst_status["ALMS01_MSOFTX"] if "ALMS01_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
     				</p>
     			</td>
     			<td width="129">
     				<p>
-    					<strong>{cnacld_lst_status["ALMS02_MSOFTX"] if "ALMS02_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+    					<strong>{callprichk_vmsc_lst_status["ALMS02_MSOFTX"] if "ALMS02_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
     				</p>
     			</td>
     			<td width="129">
     				<p>
-    					<strong>{cnacld_lst_status["ALMS03_MSOFTX"] if "ALMS03_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+    					<strong>{callprichk_vmsc_lst_status["ALMS03_MSOFTX"] if "ALMS03_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
     				</p>
     			</td>
     			<td width="129">
     				<p>
-    					<strong>{cnacld_lst_status["BDMS01_MSOFTX"] if "BDMS01_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+    					<strong>{callprichk_vmsc_lst_status["BDMS01_MSOFTX"] if "BDMS01_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
     				</p>
     			</td>
     			<td width="129">
     				<p>
-    					<strong>{cnacld_lst_status["BDMS02_MSOFTX"] if "BDMS02_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+    					<strong>{callprichk_vmsc_lst_status["BDMS02_MSOFTX"] if "BDMS02_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
     				</p>
     			</td>
                 <td width="129">
     				<p>
-    					<strong>{cnacld_lst_status["BDMS03_MSOFTX"] if "BDMS03_MSOFTX" in cnacld_lst_status.keys() else "N/A"}</strong>
+    					<strong>{callprichk_vmsc_lst_status["BDMS03_MSOFTX"] if "BDMS03_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
     				</p>
     			</td>
     		</tr>"""
-    print(val)
+    cnacld += callprichk
 
-
-    lst_mail_header = f"""<tr>
-<td rowspan="" width="124">
-<p><strong>Plan Verification</strong></p>
-</td>
-<td width="92">
-<p><strong>Short Code</strong></p>
-</td>
-<td width="230">
-<p><strong>VMSC-Commands</strong></p>
-</td>
-<td width="188">
-<p><strong>Status</strong></p>
-</td>
-<td width="176">
-<p><strong>GMSC Commands</strong></p>
-</td>
-<td width="179">
-<p><strong>Status</stron></p>
-</td>
-</tr>"""
-
-    lst_mail_header += val
     # print(val)
-    return lst_mail_header
+    return cnacld
+
+def lst_callprichk_mail_body(callprichk_vmsc_lst_status, callprichk_legecy_lst_status):
+    callprichk = ''
+    callprichk = f"""<tr>
+			<td width="129">
+				<p>
+					<strong>CALLPRICHECK</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{callprichk_legecy_lst_status["DG06_MSOFT"] if "DG06_MSOFT" in callprichk_legecy_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{callprichk_legecy_lst_status["DG10_MSOFT"] if "DG10_MSOFT" in callprichk_legecy_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{callprichk_vmsc_lst_status["D3MS01_MSOFTX"] if "D3MS01_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{callprichk_vmsc_lst_status["D3MS02_MSOFTX"] if "D3MS02_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{callprichk_vmsc_lst_status["D3MS03_MSOFTX"] if "D3MS03_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{callprichk_vmsc_lst_status["VLMS01_MSOFTX"] if "VLMS01_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{callprichk_vmsc_lst_status["VLMS02_MSOFTX"] if "VLMS02_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{callprichk_vmsc_lst_status["VLMS03_MSOFTX"] if "VLMS03_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{callprichk_vmsc_lst_status["ALMS01_MSOFTX"] if "ALMS01_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{callprichk_vmsc_lst_status["ALMS02_MSOFTX"] if "ALMS02_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{callprichk_vmsc_lst_status["ALMS03_MSOFTX"] if "ALMS03_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{callprichk_vmsc_lst_status["BDMS01_MSOFTX"] if "BDMS01_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{callprichk_vmsc_lst_status["BDMS02_MSOFTX"] if "BDMS02_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+            <td width="129">
+				<p>
+					<strong>{callprichk_vmsc_lst_status["BDMS03_MSOFTX"] if "BDMS03_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+		</tr>"""
+    return callprichk
+
 
 def add_mail_body(vmsc_add_status, legecy_add_status, short_code):
 
