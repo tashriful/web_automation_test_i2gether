@@ -38,6 +38,7 @@ print(callprichk_vmsc_lst_status)
 cnacld_legecy_lst_status, callprichk_legecy_lst_status = legecy_lst_mail_body(loc, file2)
 print(cnacld_legecy_lst_status)
 print(callprichk_legecy_lst_status)
+exit(-4)
 # if cnacld_lst_status.get('Python') != None:
 #     print("The key is present.\n")
 #

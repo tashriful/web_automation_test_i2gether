@@ -240,6 +240,7 @@ def legecy_lst_mail_body(loc, file):
     file_path = f'{loc}{file}'
     cnacld_lst_status = {}
     callprichk_lst_status = {}
+    cmd_split = []
     try:
         result_data = open(f"{file_path}", "r")
         result_data = result_data.read().splitlines()
@@ -247,6 +248,8 @@ def legecy_lst_mail_body(loc, file):
         prevLine = ""
         for row in result_data:
             # print(row)
+            cmd_split.append(row)
+
             if 'MML Command-----' in row:
                 cmd_name = row
                 cmd_name = cmd_name.split('-----')
@@ -269,7 +272,18 @@ def legecy_lst_mail_body(loc, file):
                     if 'CALLPRICHK' in cmd_name:
                         callprichk_lst_status[f'{ne_name}'] = 'Not Defined'
 
-                else:
+                if prevLine != "No matching result is found":
+                    for i in cmd_split:
+                        if 'Call prefix  =' in i:
+                            print(i)
+
+                        if 'Minimum number length' in i:
+                            print(i)
+                        if 'Maximum number length' in i:
+                            print(i)
+                            break
+
+                if prevLine != "No matching result is found":
                     tac_defined_status = True
                     # print("defined")
                     if 'CNACLD' in cmd_name:
