@@ -22,19 +22,23 @@ mail_header_data = {
     "activity_name": "Short Code Define",
     "wo_num": f'{wo}'
 }
-loc = "C:/Users/MN/Downloads/Robi RPA/Robi RPA/Short Code Define/short_code2.xlsx"
+loc = "E:/Robi RPA/Short Code Define/short_code2.xlsx"
 plan_format_status, vmsc_fragment, legecy_fragment = bmc_plan_format_check(loc)
 plan_mail_data = plan_file_mail_body(vmsc_fragment, legecy_fragment)
 
-loc = f'C:/Users/MN/Downloads/Robi RPA/Robi RPA/Short Code Define/'
+loc = f'E:/Robi RPA/Short Code Define/'
 file = f'vmsc.rst'
 file2 = f'legecy_lst.rst'
 file3 = f'addlog.txt'
 file4 = f'addVmsc.txt'
-code = '10651'
-cnacld_vmsc_lst_status, callprichk_vmsc_lst_status = legecy_lst_mail_body(loc, file)
+code = '10654'
+description = 'atu'
+route_name = 'DG0_DG10'
+
+cnacld_vmsc_lst_status, callprichk_vmsc_lst_status = legecy_lst_mail_body(loc, file, code, route_name, description)
 print(cnacld_vmsc_lst_status)
 print(callprichk_vmsc_lst_status)
+exit(-6)
 cnacld_legecy_lst_status, callprichk_legecy_lst_status = legecy_lst_mail_body(loc, file2)
 print(cnacld_legecy_lst_status)
 print(callprichk_legecy_lst_status)

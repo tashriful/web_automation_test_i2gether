@@ -236,11 +236,18 @@ def vmsc_lst_mail_body(loc, file):
 
         print("false" + "e")
 
-def legecy_lst_mail_body(loc, file):
+def legecy_lst_mail_body(loc, file, code, route_name, description):
     file_path = f'{loc}{file}'
     cnacld_lst_status = {}
     callprichk_lst_status = {}
     cmd_split = []
+    cmd_name = ''
+    ne_name = ''
+    status = []
+    cnacld_target_status = [True, True, True, True]
+    callprichk_target_status = True
+    length = len(code)
+    print(f'code{length}')
     try:
         result_data = open(f"{file_path}", "r")
         result_data = result_data.read().splitlines()
@@ -256,7 +263,7 @@ def legecy_lst_mail_body(loc, file):
                 cmd_name = cmd_name[1]
                 cmd_name = cmd_name.split(':')
                 cmd_name = cmd_name[0]
-                # print(cmd_name)
+                print(cmd_name)
             if 'NE :' in row:
                 ne_name = row
                 ne_name = ne_name.split(' : ')
@@ -274,22 +281,68 @@ def legecy_lst_mail_body(loc, file):
 
                 if prevLine != "No matching result is found":
                     for i in cmd_split:
+                        # if
                         if 'Call prefix  =' in i:
-                            print(i)
+                            cmd_code = i.split('=')
+                            cmd_code = cmd_code[1].strip()
+                            # print(cmd_code)
+                            if 'CNACLD' in cmd_name:
+                                if cmd_code == code:
+                                    status.append(True)
+                            if 'CALLPRICHK' in cmd_name:
+                                callpri_status = True
 
-                        if 'Minimum number length' in i:
-                            print(i)
-                        if 'Maximum number length' in i:
-                            print(i)
-                            break
-
-                if prevLine != "No matching result is found":
-                    tac_defined_status = True
-                    # print("defined")
+                        if 'Minimum number length' in i and 'CNACLD' in cmd_name:
+                            min_length = i.split('=')
+                            min_length = min_length[1].strip()
+                            # print(min_length)
+                            # print(length)
+                            if int(min_length) == int(length):
+                                status.append(True)
+                        if 'Maximum number length' in i and 'CNACLD' in cmd_name:
+                            max_length = i.split('=')
+                            max_length = max_length[1].strip()
+                            # print(max_length)
+                            if int(max_length) == int(length):
+                                status.append(True)
+                        if 'Route selection name' in i and 'CNACLD' in cmd_name:
+                            cmd_route = i.split('=')
+                            cmd_route = cmd_route[1].strip()
+                            # print(cmd_route)
+                            if cmd_route == route_name:
+                                status.append(True)
+                    # print(status)
+                    # print(target_status)
                     if 'CNACLD' in cmd_name:
-                        cnacld_lst_status[f'{ne_name}'] = 'Defined'
+                        if status == cnacld_target_status:
+                            if 'CNACLD' in cmd_name:
+                                cnacld_lst_status[f'{ne_name}'] = 'Defined'
+                            if 'CALLPRICHK' in cmd_name:
+                                callprichk_lst_status[f'{ne_name}'] = 'Defined'
+                            print(True)
+                        else:
+                            if 'CNACLD' in cmd_name:
+                                cnacld_lst_status[f'{ne_name}'] = 'Wrongly Defined'
+                            if 'CALLPRICHK' in cmd_name:
+                                callprichk_lst_status[f'{ne_name}'] = 'Wrongly Defined'
+                            print(False)
                     if 'CALLPRICHK' in cmd_name:
-                        callprichk_lst_status[f'{ne_name}'] = 'Defined'
+                        if callpri_status == callprichk_target_status:
+                            if 'CNACLD' in cmd_name:
+                                cnacld_lst_status[f'{ne_name}'] = 'Defined'
+                            if 'CALLPRICHK' in cmd_name:
+                                callprichk_lst_status[f'{ne_name}'] = 'Defined'
+                            print(True)
+                        else:
+                            if 'CNACLD' in cmd_name:
+                                cnacld_lst_status[f'{ne_name}'] = 'Wrongly Defined'
+                            if 'CALLPRICHK' in cmd_name:
+                                callprichk_lst_status[f'{ne_name}'] = 'Wrongly Defined'
+                            print(False)
+                    status.clear()
+                    cmd_split.clear()
+
+
 
             prevLine = row
         # print(legecy_lst_status)
