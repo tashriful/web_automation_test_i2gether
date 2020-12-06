@@ -236,7 +236,7 @@ def vmsc_lst_mail_body(loc, file):
 
         print("false" + "e")
 
-def legecy_lst_mail_body(loc, file, code, route_name, description):
+def vmsc_lst_mail_dict(loc, file, code, route_name, description):
     file_path = f'{loc}{file}'
     cnacld_lst_status = {}
     callprichk_lst_status = {}
@@ -244,7 +244,7 @@ def legecy_lst_mail_body(loc, file, code, route_name, description):
     cmd_name = ''
     ne_name = ''
     status = []
-    cnacld_target_status = [True, True, True, True]
+    cnacld_target_status = [True, True, True, True, True]
     callprichk_target_status = True
     length = len(code)
     print(f'code{length}')
@@ -311,6 +311,13 @@ def legecy_lst_mail_body(loc, file, code, route_name, description):
                             # print(cmd_route)
                             if cmd_route == route_name:
                                 status.append(True)
+
+                        if 'Description' in i and 'CNACLD' in cmd_name:
+                            des = i.split('=')
+                            des = des[1].strip()
+                            # print(cmd_route)
+                            if des == description:
+                                status.append(True)
                     # print(status)
                     # print(target_status)
                     if 'CNACLD' in cmd_name:
@@ -347,6 +354,120 @@ def legecy_lst_mail_body(loc, file, code, route_name, description):
             prevLine = row
         # print(legecy_lst_status)
         return cnacld_lst_status, callprichk_lst_status
+    except Exception as e:
+
+        print("false" + "e")
+
+def legecy_lst_mail_dict(loc, file, code, route_name, description):
+    file_path = f'{loc}{file}'
+    cnacld_lst_status = {}
+    cmd_split = []
+    cmd_name = ''
+    ne_name = ''
+    status = []
+    cnacld_target_status = [True, True, True, True, True]
+    length = len(code)
+    # print(f'code{length}')
+    try:
+        result_data = open(f"{file_path}", "r")
+        result_data = result_data.read().splitlines()
+
+        prevLine = ""
+        for row in result_data:
+            # print(row)
+            cmd_split.append(row)
+
+            if 'MML Command-----' in row:
+                cmd_name = row
+                cmd_name = cmd_name.split('-----')
+                cmd_name = cmd_name[1]
+                cmd_name = cmd_name.split(':')
+                cmd_name = cmd_name[0]
+                # print(cmd_name)
+            if 'NE :' in row:
+                ne_name = row
+                ne_name = ne_name.split(' : ')
+                ne_name = ne_name[1]
+                # print(ne_name)
+            if '---    END' in row:
+
+                if prevLine == "No matching result is found":
+                    tac_defined_status = False
+                    # print("not defined")
+
+                    cnacld_lst_status[f'{ne_name}'] = 'Not Defined'
+
+
+                if prevLine != "No matching result is found" and ne_name != 'CGDR01_MSOFT':
+                    print(cmd_split)
+                    print(ne_name)
+                    for i in cmd_split:
+                        if 'Call prefix  =' in i:
+                            cmd_code = i.split('=')
+                            cmd_code = cmd_code[1].strip()
+                            print(cmd_code)
+                            if cmd_code == code:
+                              status.append(True)
+
+
+                        if 'Minimum number length' in i:
+                            print(i)
+                            min_length = i.split('=')
+                            min_length = min_length[1].strip()
+                            print(min_length)
+                            print(length)
+                            if int(min_length) == int(length):
+                                status.append(True)
+                #
+                #
+                #
+
+                        if 'Minimum number length' in i:
+                            min_length = i.split('=')
+                            min_length = min_length[1].strip()
+                            # print(min_length)
+                            # print(length)
+                            if int(min_length) == int(length):
+                                status.append(True)
+                        if 'Maximum number length' in i:
+                            max_length = i.split('=')
+                            max_length = max_length[1].strip()
+                            # print(max_length)
+                            if int(max_length) == int(length):
+                                status.append(True)
+                        if 'Route selection name' in i:
+                            cmd_route = i.split('=')
+                            cmd_route = cmd_route[1].strip()
+                            # print(cmd_route)
+                            if cmd_route == route_name:
+                                status.append(True)
+                #
+                        if 'Description' in i:
+                            des = i.split('=')
+                            des = des[1].strip()
+                            # print(cmd_route)
+                            if des == description:
+                                status.append(True)
+                    print(status)
+                    print(cnacld_target_status)
+                #     if 'CNACLD' in cmd_name:
+                    if status == cnacld_target_status:
+                        cnacld_lst_status[f'{ne_name}'] = 'Defined'
+                        print(True)
+                    else:
+
+                        cnacld_lst_status[f'{ne_name}'] = 'Wrongly Defined'
+
+                        print(False)
+                #
+                status.clear()
+                cmd_split.clear()
+
+
+
+            prevLine = row
+        # print(legecy_lst_status)
+        return cnacld_lst_status
     except Exception as e:
 
         print("false" + "e")
