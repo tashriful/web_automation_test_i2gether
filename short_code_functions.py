@@ -472,6 +472,164 @@ def legecy_lst_mail_dict(loc, file, code, route_name, description):
 
         print("false" + "e")
 
+def vmsc_add_mail_dict(loc, file):
+    file_path = f'{loc}{file}'
+    cnacld_add_status = {}
+    callprichk_add_status = {}
+    cmd_name = ''
+    ne_name = ''
+    retcode_status = ''
+    try:
+        result_data = open(f"{file_path}", "r")
+        result_data = result_data.read().splitlines()
+
+        prevLine = ""
+        for row in result_data:
+            # print(row)
+
+            if 'MML Command-----' in row:
+                cmd_name = row
+                cmd_name = cmd_name.split('-----')
+                cmd_name = cmd_name[1]
+                cmd_name = cmd_name.split(':')
+                cmd_name = cmd_name[0]
+                print(cmd_name)
+            if 'NE :' in row:
+                ne_name = row
+                ne_name = ne_name.split(' : ')
+                ne_name = ne_name[1]
+
+            if 'RETCODE' in row:
+                retcode_status = row.split('  ')
+                retcode_status = retcode_status[1]
+                print(retcode_status)
+                if 'CNACLD' in cmd_name:
+                    cnacld_add_status[f'{ne_name}'] = retcode_status
+                if 'CALLPRICHK' in cmd_name:
+                    callprichk_add_status[f'{ne_name}'] = retcode_status
+
+            prevLine = row
+        # print(legecy_lst_status)
+        return cnacld_add_status, callprichk_add_status
+    except Exception as e:
+
+        print("false" + "e")
+
+def legecy_add_mail_dict(loc, file):
+    file_path = f'{loc}{file}'
+    cnacld_add_status = {}
+    callprichk_add_status = {}
+    cmd_name = ''
+    ne_name = ''
+    retcode_status = ''
+    try:
+        result_data = open(f"{file_path}", "r")
+        result_data = result_data.read().splitlines()
+
+        prevLine = ""
+        for row in result_data:
+            # print(row)
+
+            if 'MML Command-----' in row:
+                cmd_name = row
+                cmd_name = cmd_name.split('-----')
+                cmd_name = cmd_name[1]
+                cmd_name = cmd_name.split(':')
+                cmd_name = cmd_name[0]
+                print(cmd_name)
+            if 'NE :' in row:
+                ne_name = row
+                ne_name = ne_name.split(' : ')
+                ne_name = ne_name[1]
+
+            if 'RETCODE' in row:
+                retcode_status = row.split('  ')
+                retcode_status = retcode_status[1]
+                print(retcode_status)
+                if 'CNACLD' in cmd_name:
+                    cnacld_add_status[f'{ne_name}'] = retcode_status
+                if 'CALLPRICHK' in cmd_name:
+                    callprichk_add_status[f'{ne_name}'] = retcode_status
+
+            prevLine = row
+        # print(legecy_lst_status)
+        return cnacld_add_status
+    except Exception as e:
+
+        print("false" + "e")
+
+def vmsc_add_mail_body(loc, file):
+    file_path = f'{loc}{file}'
+    vmsc_add_status = {}
+    try:
+        result_data = open(f"{file_path}", "r")
+        result_data = result_data.read().splitlines()
+        ne_name = ''
+        cmd_name = ''
+        prevLine = ""
+        retcode_status = ''
+        for row in result_data:
+            # print(row)
+            if 'ADD ' in row:
+                if '%%/*' in row:
+                    continue
+                cmd_name = row
+                cmd_name = cmd_name.split(':')
+                cmd_name = cmd_name[0]
+                # print(cmd_name)
+                # print(cmd_name)
+
+            if '+++' in row:
+                ne_name = prevLine
+                # print(ne_name)
+
+            if 'RETCODE' in row:
+                retcode_status = row
+                # print(retcode_status)
+                vmsc_add_status[f'{ne_name} :{cmd_name}'] = retcode_status
+            prevLine = row
+
+        return vmsc_add_status
+    except Exception as e:
+
+        print("false" + "e")
+
+def legecy_add_mail_body(loc, file):
+    file_path = f'{loc}{file}'
+    vmsc_add_status = {}
+    try:
+        result_data = open(f"{file_path}", "r")
+        result_data = result_data.read().splitlines()
+        ne_name = ''
+        cmd_name = ''
+        prevLine = ""
+        retcode_status = ''
+        for row in result_data:
+            # print(row)
+            if 'ADD ' in row:
+                if '%%/*' in row:
+                    continue
+                cmd_name = row
+                cmd_name = cmd_name.split(':')
+                cmd_name = cmd_name[0]
+                # print(cmd_name)
+                # print(cmd_name)
+
+            if '+++' in row:
+                ne_name = prevLine
+                # print(ne_name)
+
+            if 'RETCODE' in row:
+                retcode_status = row
+                # print(retcode_status)
+                vmsc_add_status[f'{ne_name} :{cmd_name}'] = retcode_status
+            prevLine = row
+
+        return vmsc_add_status
+    except Exception as e:
+
+        print("false" + "e")
+
 def lst_mail_body(cnacld_vmsc_lst_status, cnacld_legecy_lst_status, callprichk_vmsc_lst_status, callprichk_legecy_lst_status, short_code):
     print(cnacld_legecy_lst_status)
     # return
@@ -640,6 +798,176 @@ def lst_mail_body(cnacld_vmsc_lst_status, cnacld_legecy_lst_status, callprichk_v
 
     # print(val)
     return cnacld
+
+def add_mail_body(cnacld_vmsc_lst_status, cnacld_legecy_lst_status, callprichk_vmsc_lst_status, short_code):
+    print(cnacld_legecy_lst_status)
+    # return
+    cnacld = ''
+    callprichk = ''
+    cnacld = f"""<tr>
+			<td rowspan="2" width="129">
+				<p>
+					<strong>{short_code}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>CNACLD</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_legecy_lst_status["DG06_MSOFT"] if "DG06_MSOFT" in cnacld_legecy_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_legecy_lst_status["DG10_MSOFT"] if "DG10_MSOFT" in cnacld_legecy_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_vmsc_lst_status["D3MS01_MSOFTX"] if "D3MS01_MSOFTX" in cnacld_vmsc_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_vmsc_lst_status["D3MS02_MSOFTX"] if "D3MS02_MSOFTX" in cnacld_vmsc_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_vmsc_lst_status["D3MS03_MSOFTX"] if "D3MS03_MSOFTX" in cnacld_vmsc_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_vmsc_lst_status["VLMS01_MSOFTX"] if "VLMS01_MSOFTX" in cnacld_vmsc_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_vmsc_lst_status["VLMS02_MSOFTX"] if "VLMS02_MSOFTX" in cnacld_vmsc_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_vmsc_lst_status["VLMS03_MSOFTX"] if "VLMS03_MSOFTX" in cnacld_vmsc_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_vmsc_lst_status["ALMS01_MSOFTX"] if "ALMS01_MSOFTX" in cnacld_vmsc_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_vmsc_lst_status["ALMS02_MSOFTX"] if "ALMS02_MSOFTX" in cnacld_vmsc_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_vmsc_lst_status["ALMS03_MSOFTX"] if "ALMS03_MSOFTX" in cnacld_vmsc_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_vmsc_lst_status["BDMS01_MSOFTX"] if "BDMS01_MSOFTX" in cnacld_vmsc_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+			<td width="129">
+				<p>
+					<strong>{cnacld_vmsc_lst_status["BDMS02_MSOFTX"] if "BDMS02_MSOFTX" in cnacld_vmsc_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+            <td width="129">
+				<p>
+					<strong>{cnacld_vmsc_lst_status["BDMS03_MSOFTX"] if "BDMS03_MSOFTX" in cnacld_vmsc_lst_status.keys() else "N/A"}</strong>
+				</p>
+			</td>
+		</tr>"""
+    callprichk = f"""<tr>
+    			<td width="129">
+    				<p>
+    					<strong>CALLPRICHECK</strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>N/A</strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>N/A</strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>{callprichk_vmsc_lst_status["D3MS01_MSOFTX"] if "D3MS01_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>{callprichk_vmsc_lst_status["D3MS02_MSOFTX"] if "D3MS02_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>{callprichk_vmsc_lst_status["D3MS03_MSOFTX"] if "D3MS03_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>{callprichk_vmsc_lst_status["VLMS01_MSOFTX"] if "VLMS01_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>{callprichk_vmsc_lst_status["VLMS02_MSOFTX"] if "VLMS02_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>{callprichk_vmsc_lst_status["VLMS03_MSOFTX"] if "VLMS03_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>{callprichk_vmsc_lst_status["ALMS01_MSOFTX"] if "ALMS01_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>{callprichk_vmsc_lst_status["ALMS02_MSOFTX"] if "ALMS02_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>{callprichk_vmsc_lst_status["ALMS03_MSOFTX"] if "ALMS03_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>{callprichk_vmsc_lst_status["BDMS01_MSOFTX"] if "BDMS01_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+    			<td width="129">
+    				<p>
+    					<strong>{callprichk_vmsc_lst_status["BDMS02_MSOFTX"] if "BDMS02_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+                <td width="129">
+    				<p>
+    					<strong>{callprichk_vmsc_lst_status["BDMS03_MSOFTX"] if "BDMS03_MSOFTX" in callprichk_vmsc_lst_status.keys() else "N/A"}</strong>
+    				</p>
+    			</td>
+    		</tr>"""
+    cnacld += callprichk
+
+    # print(val)
+    return cnacld
+
 
 def lst_callprichk_mail_body(callprichk_vmsc_lst_status, callprichk_legecy_lst_status):
     callprichk = ''
@@ -860,77 +1188,7 @@ def consistency_mail_body(vmsc_consistency_status, legecy_consistency_status, sh
     # print(val)
     return consistency_mail_header
 
-def vmsc_add_mail_body(loc, file):
-    file_path = f'{loc}{file}'
-    vmsc_add_status = {}
-    try:
-        result_data = open(f"{file_path}", "r")
-        result_data = result_data.read().splitlines()
-        ne_name = ''
-        cmd_name = ''
-        prevLine = ""
-        retcode_status = ''
-        for row in result_data:
-            # print(row)
-            if 'ADD ' in row:
-                if '%%/*' in row:
-                    continue
-                cmd_name = row
-                cmd_name = cmd_name.split(':')
-                cmd_name = cmd_name[0]
-                # print(cmd_name)
-                # print(cmd_name)
 
-            if '+++' in row:
-                ne_name = prevLine
-                # print(ne_name)
-
-            if 'RETCODE' in row:
-                retcode_status = row
-                # print(retcode_status)
-                vmsc_add_status[f'{ne_name} :{cmd_name}'] = retcode_status
-            prevLine = row
-
-        return vmsc_add_status
-    except Exception as e:
-
-        print("false" + "e")
-
-def legecy_add_mail_body(loc, file):
-    file_path = f'{loc}{file}'
-    vmsc_add_status = {}
-    try:
-        result_data = open(f"{file_path}", "r")
-        result_data = result_data.read().splitlines()
-        ne_name = ''
-        cmd_name = ''
-        prevLine = ""
-        retcode_status = ''
-        for row in result_data:
-            # print(row)
-            if 'ADD ' in row:
-                if '%%/*' in row:
-                    continue
-                cmd_name = row
-                cmd_name = cmd_name.split(':')
-                cmd_name = cmd_name[0]
-                # print(cmd_name)
-                # print(cmd_name)
-
-            if '+++' in row:
-                ne_name = prevLine
-                # print(ne_name)
-
-            if 'RETCODE' in row:
-                retcode_status = row
-                # print(retcode_status)
-                vmsc_add_status[f'{ne_name} :{cmd_name}'] = retcode_status
-            prevLine = row
-
-        return vmsc_add_status
-    except Exception as e:
-
-        print("false" + "e")
 
 def prepare_mail_body(mail_header_data, plan_format_status, ne_assebility, plan_mail_data, lst_mail_data, lst_status, wo_status):
 

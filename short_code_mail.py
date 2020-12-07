@@ -6,6 +6,8 @@ from short_code_functions import plan_file_mail_body
 from short_code_functions import vmsc_lst_mail_body
 from short_code_functions import legecy_lst_mail_dict
 from short_code_functions import vmsc_lst_mail_dict
+from short_code_functions import legecy_add_mail_dict
+from short_code_functions import vmsc_add_mail_dict
 from short_code_functions import lst_mail_body
 from short_code_functions import lst_callprichk_mail_body
 from short_code_functions import vmsc_add_mail_body
@@ -31,7 +33,8 @@ loc = f'E:/Robi RPA/Short Code Define/'
 file = f'vmsc.rst'
 file2 = f'legecyLst_main.rst'
 file3 = f'addlog.txt'
-file4 = f'addVmsc.txt'
+file4 = f'vmscAdd.rst'
+file5 = f'legecyAdd.rst'
 code = '10654'
 description = 'Ship Aichi MSL'
 route_name = 'DG06_DG10'
@@ -40,9 +43,17 @@ route_name = 'DG06_DG10'
 # print(cnacld_vmsc_lst_status)
 # print(callprichk_vmsc_lst_status)
 # exit(-6)
-cnacld_legecy_lst_status = legecy_lst_mail_dict(loc, file2, code, route_name, description)
-print(cnacld_legecy_lst_status)
-exit(-4)
+# cnacld_legecy_lst_status = legecy_lst_mail_dict(loc, file2, code, route_name, description)
+# print(cnacld_legecy_lst_status)
+# exit(-4)
+cnacld_vmsc_add_status, callprichk_vmsc_add_status = vmsc_add_mail_dict(loc, file4)
+print(cnacld_vmsc_add_status)
+print(callprichk_vmsc_add_status)
+cnacld_legecy_add_status = legecy_add_mail_dict(loc, file5)
+print(cnacld_legecy_add_status)
+exit(-8)
+
+
 # if cnacld_lst_status.get('Python') != None:
 #     print("The key is present.\n")
 #

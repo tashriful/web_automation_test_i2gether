@@ -64,27 +64,44 @@ def lst_output_status_check(result_file_location, result_file_name):
 
         prevLine = ""
         laivlr = ''
+        command = ''
+        cmd_stat = {}
         for row in result_data:
             # print(row)
             if 'MML Command-----LST LAIVLR:' in row:
                 laivlr = True
             if 'MML Command-----' in row:
-                print(row)
+                # print(row)
                 command = row.split('-----')
-                print(command[1])
+                command = command[1]
+                command = command.split(':')
+                command = command[0]
+                command = command.split(' ')
+                command = command[1]
+                print(command)
+            if 'NE : NE' in row:
+                ne = row.split('=')
+                ne = ne[1]
+                ne = ne.split(',')
+                ne = ne[0]
+                print(ne)
+
             if '---    END' in row:
 
                 if prevLine != "No matching result is found":
-                    if laivlr == True:
-                        laivlr = False
-                        continue
+                    # if laivlr == True:
+                    #     laivlr = False
+                    #     continue
                     print("defined")
+                    cmd_stat[f'{command}-{ne}'] = 'Defined'
 
-                    return False
+                    # return False
                 else:
                     print("undefined")
+                    cmd_stat[f'{command}-{ne}'] = 'Not Defined'
 
             prevLine = row
+        print(cmd_stat)
     except Exception as e:
         print("false" + "e")
 
