@@ -558,6 +558,55 @@ def legecy_add_mail_dict(loc, file):
 
         print("false" + "e")
 
+def vmsc_consistency_mail_dict(loc, file):
+    file_path = f'{loc}{file}'
+    cnacld_lst_status = {}
+    callprichk_lst_status = {}
+    cmd_name = ''
+    ne_name = ''
+    try:
+        result_data = open(f"{file_path}", "r")
+        result_data = result_data.read().splitlines()
+
+        prevLine = ""
+        for row in result_data:
+            # print(row)
+
+            if 'MML Command-----' in row:
+                cmd_name = row
+                cmd_name = cmd_name.split('-----')
+                cmd_name = cmd_name[1]
+                cmd_name = cmd_name.split(':')
+                cmd_name = cmd_name[0]
+                print(cmd_name)
+            if 'NE :' in row:
+                ne_name = row
+                ne_name = ne_name.split(' : ')
+                ne_name = ne_name[1]
+                # print(ne_name)
+            if '---    END' in row:
+
+                if prevLine == "No matching result is found":
+                    tac_defined_status = False
+                    # print("not defined")
+                    if 'CNACLD' in cmd_name:
+                        cnacld_lst_status[f'{ne_name}'] = 'Unsuccessful'
+                    if 'CALLPRICHK' in cmd_name:
+                        callprichk_lst_status[f'{ne_name}'] = 'Unsuccessful'
+
+                else:
+                    if 'CNACLD' in cmd_name:
+                        cnacld_lst_status[f'{ne_name}'] = 'successful'
+                    if 'CALLPRICHK' in cmd_name:
+                        callprichk_lst_status[f'{ne_name}'] = 'successful'
+
+            prevLine = row
+        # print(legecy_lst_status)
+        return cnacld_lst_status, callprichk_lst_status
+    except Exception as e:
+
+        print("false" + "e")
+
 def vmsc_add_mail_body(loc, file):
     file_path = f'{loc}{file}'
     vmsc_add_status = {}
@@ -629,6 +678,48 @@ def legecy_add_mail_body(loc, file):
     except Exception as e:
 
         print("false" + "e")
+
+def mail_header(mail_header_data):
+    val = f"""<table width="2111" border= 1px solid black>
+	<tbody>
+		<tr>
+			<td colspan="17" width="2111">
+				<p><strong>{mail_header_data["subject"]}</strong></p>
+			</td>
+		</tr>
+		<tr>
+			<td width="100">
+				<p><strong>Activity Name</strong></p>
+			</td>
+			<td colspan="16" width="2011">
+				<p>Short Code Define</p>
+			</td>
+		</tr>
+		<tr>
+			<td width="100">
+				<p><strong>WO Number</strong></p>
+			</td>
+			<td colspan="16" width="2011">
+				<p>{mail_header_data["wo_num"]}</p>
+			</td>
+		</tr>
+		<tr>
+			<td width="100">
+				<p><strong>Plan Format</strong></p>
+			</td>
+			<td colspan="16" width="2011">
+				<p>Ok</p>
+			</td>
+		</tr>
+		<tr>
+			<td width="100">
+				<p><strong>Accessibility to NE</strong></p>
+			</td>
+			<td colspan="16" width="2011">
+				<p>Yes</p>
+			</td>
+		</tr>"""
+    return val
 
 def lst_mail_body(cnacld_vmsc_lst_status, cnacld_legecy_lst_status, callprichk_vmsc_lst_status, callprichk_legecy_lst_status, short_code):
     print(cnacld_legecy_lst_status)

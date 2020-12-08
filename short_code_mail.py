@@ -16,6 +16,8 @@ from short_code_functions import legecy_add_mail_body
 from short_code_functions import add_mail_body
 from short_code_functions import short_code_lst
 from short_code_functions import prepare_add_mail_body
+from short_code_functions import mail_header
+from short_code_functions import vmsc_consistency_mail_dict
 
 current_date = date.today()
 
@@ -39,6 +41,8 @@ code = '10654'
 description = 'Ship Aichi MSL'
 route_name = 'DG06_DG10'
 
+
+
 # cnacld_vmsc_lst_status, callprichk_vmsc_lst_status = vmsc_lst_mail_dict(loc, file, code, route_name, description)
 # print(cnacld_vmsc_lst_status)
 # print(callprichk_vmsc_lst_status)
@@ -46,12 +50,21 @@ route_name = 'DG06_DG10'
 # cnacld_legecy_lst_status = legecy_lst_mail_dict(loc, file2, code, route_name, description)
 # print(cnacld_legecy_lst_status)
 # exit(-4)
-cnacld_vmsc_add_status, callprichk_vmsc_add_status = vmsc_add_mail_dict(loc, file4)
-print(cnacld_vmsc_add_status)
-print(callprichk_vmsc_add_status)
-cnacld_legecy_add_status = legecy_add_mail_dict(loc, file5)
-print(cnacld_legecy_add_status)
-exit(-8)
+# mail_header = mail_header(mail_header_data)
+# cnacld_vmsc_add_status, callprichk_vmsc_add_status = vmsc_add_mail_dict(loc, file4)
+# print(cnacld_vmsc_add_status)
+# print(callprichk_vmsc_add_status)
+# cnacld_legecy_add_status = legecy_add_mail_dict(loc, file5)
+# print(cnacld_legecy_add_status)
+# exit(-8)
+
+cnacld_vmsc_consistency_status, callprichk_vmsc_consistency_status = vmsc_consistency_mail_dict(loc, file)
+print(cnacld_vmsc_consistency_status)
+print(callprichk_vmsc_consistency_status)
+cnacld_legecy_consistency_status, callprichk_legecy_consistency_status = vmsc_consistency_mail_dict(loc, file2)
+print(cnacld_legecy_consistency_status)
+print(callprichk_legecy_consistency_status)
+exit(-3)
 
 
 # if cnacld_lst_status.get('Python') != None:
