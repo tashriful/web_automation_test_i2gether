@@ -1,4 +1,5 @@
-from datetime import date
+from datetime import date, time
+import time
 
 # from short_code_functions import short_code_lst
 from short_code_functions import bmc_plan_format_check
@@ -58,6 +59,20 @@ route_name = 'DG06_DG10'
 # print(cnacld_legecy_add_status)
 # exit(-8)
 
+i = [1, 2, 3, 4, 5]
+for j in i:
+    k = 0
+    while k<3:
+        print(k)
+        time.sleep(5)
+        k += 1
+        # j += 1
+    print(j)
+    # j += 1
+    time.sleep(5)
+    print("atu")
+print("patu")
+exit(-8)
 cnacld_vmsc_consistency_status, callprichk_vmsc_consistency_status = vmsc_consistency_mail_dict(loc, file)
 print(cnacld_vmsc_consistency_status)
 print(callprichk_vmsc_consistency_status)
